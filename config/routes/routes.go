@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/junminhong/toot-clock/api/v1/train"
+	"os"
 )
 
 func InitRoutes() {
@@ -12,5 +13,9 @@ func InitRoutes() {
 		v1.POST("/time", train.GetTrainInfo)
 		v1.GET("/station", train.GetTrainStation)
 	}
-	router.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	router.Run(":" + port)
 }
