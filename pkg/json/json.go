@@ -19,7 +19,7 @@ type stationInfo struct {
 	Gps           string `json:"gps"`
 }
 
-func ProcessStation() {
+func ProcessStation() []stationInfo {
 	jsonFile, err := os.Open("station_dataset.json")
 	if err != nil {
 		log.Println(err)
@@ -34,5 +34,5 @@ func ProcessStation() {
 	if err != nil {
 		panic(err)
 	}
-	log.Println(stationInfos[0])
+	return stationInfos
 }

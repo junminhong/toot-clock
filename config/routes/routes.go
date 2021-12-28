@@ -7,9 +7,10 @@ import (
 
 func InitRoutes() {
 	router := gin.Default()
-	v1 := router.Group("/api/v1")
+	v1 := router.Group("/api/v1/train")
 	{
-		v1.POST("/train", train.GetTrainInfo)
+		v1.POST("/time", train.GetTrainInfo)
+		v1.GET("/station", train.GetTrainStation)
 	}
 	router.Run(":8080")
 }

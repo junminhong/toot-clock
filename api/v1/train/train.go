@@ -3,6 +3,7 @@ package train
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/junminhong/toot-clock/pkg/collector"
+	"github.com/junminhong/toot-clock/pkg/json"
 	"log"
 	"net/http"
 )
@@ -42,5 +43,11 @@ func GetTrainInfo(c *gin.Context) {
 	trainInfos := collector.TrainInfoCollector(formData)
 	c.JSON(http.StatusOK, gin.H{
 		"data": trainInfos[0],
+	})
+}
+
+func GetTrainStation(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"data": json.ProcessStation(),
 	})
 }
