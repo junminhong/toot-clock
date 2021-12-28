@@ -2,8 +2,8 @@ package train
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/junminhong/toot-clock/pkg/cleaner"
 	"github.com/junminhong/toot-clock/pkg/collector"
-	"github.com/junminhong/toot-clock/pkg/json"
 	"log"
 	"net/http"
 )
@@ -29,6 +29,10 @@ type searchInfo struct {
 	EndTime      string `form:"endTime" json:"endTime" binding:"required"`
 }
 
+type station struct {
+	Station string `json:"Station"`
+}
+
 func GetTrainInfo(c *gin.Context) {
 	query := &searchInfo{}
 	err := c.BindJSON(query)
@@ -47,7 +51,12 @@ func GetTrainInfo(c *gin.Context) {
 }
 
 func GetTrainStation(c *gin.Context) {
+	stationInfos := cleaner.ProcessStation()
+	var stations []station
+	for index := 0; index < len(stationInfos); index++ {
+		stations = append(stations, station{Station: stationInfos[index].StationCode + stationInfos[index].StationName})
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"data": json.ProcessStation(),
+		"data": stations,
 	})
 }
