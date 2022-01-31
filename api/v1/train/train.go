@@ -9,24 +9,27 @@ import (
 )
 
 var formData = map[string]string{
-	"startStation":       "4220-臺南",
-	"endStation":         "4210-大橋",
-	"transfer":           "ONE",
-	"rideDate":           "2021/12/28",
-	"startOrEndTime":     "true",
-	"startTime":          "00:00",
-	"endTime":            "23:59",
-	"transferStation":    "0900-基隆",
+	"startStation": "4220-臺南",
+	"endStation":   "4210-大橋",
+	// ONE NORMAL
+	"transfer":        "ONE",
+	"rideDate":        "2021/12/28",
+	"startOrEndTime":  "true",
+	"startTime":       "00:00",
+	"endTime":         "23:59",
+	"transferStation": "0900-基隆",
+	//ALL=全部 RESERVED_TRAIN=對號 NON_RESERVED=非對號
 	"trainTypeList":      "ALL",
 	"_isQryEarlyBirdTrn": "on",
 }
 
 type searchInfo struct {
-	StartStation string `form:"startStation" json:"startStation" binding:"required"`
-	EndStation   string `form:"endStation" json:"endStation" binding:"required"`
-	RideDate     string `form:"rideDate" json:"rideDate" binding:"required"`
-	StartTime    string `form:"startTime" json:"startTime" binding:"required"`
-	EndTime      string `form:"endTime" json:"endTime" binding:"required"`
+	StartStation  string `json:"start_station" binding:"required"`
+	EndStation    string `json:"end_station" binding:"required"`
+	RideDate      string `json:"ride_date" binding:"required"`
+	StartTime     string `json:"start_time" binding:"required"`
+	EndTime       string `json:"end_time" binding:"required"`
+	TrainTypeList string `json:"train_type_list" binding:"required"`
 }
 
 type station struct {
@@ -44,9 +47,10 @@ func GetTrainInfo(c *gin.Context) {
 	formData["rideDate"] = query.RideDate
 	formData["startTime"] = query.StartTime
 	formData["endTime"] = query.EndTime
+	formData["trainTypeList"] = query.TrainTypeList
 	trainInfos := collector.TrainInfoCollector(formData)
 	c.JSON(http.StatusOK, gin.H{
-		"data": trainInfos[0],
+		"data": trainInfos,
 	})
 }
 
